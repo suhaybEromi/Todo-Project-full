@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const todos = require("../controllers/todos.controller");
 
-app.get("/", todos.getAllTodos);
+app.get("/collection/:id", todos.getAllTodosByCollection);
 app.post("/", todos.createTodos);
 app.get("/:id", todos.getTodosById);
 app.put("/:id", todos.updateTodos);

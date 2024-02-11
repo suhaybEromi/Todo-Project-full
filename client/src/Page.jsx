@@ -2,8 +2,9 @@ import { GoPlus } from "react-icons/go";
 import { Form } from "react-bootstrap";
 import Todo from "./components/Todo";
 import { IoTrashOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dailog from "./components/Dailog";
+import request from "./components/request";
 
 export default function Page() {
   const [showEdit, setShowEdit] = useState(false);
@@ -16,29 +17,13 @@ export default function Page() {
   const [showNewTodo, setShowNewTodo] = useState(false);
   const [newTodo, setNewTodo] = useState({ title: "" });
 
-  const todos = [
-    {
-      id: 1,
-      title: "Home 1",
-      collectionId: 1,
-      isCompleted: false,
-      createdAt: "New Date 1",
-    },
-    {
-      id: 2,
-      title: "Home 2",
-      collectionId: 2,
-      isCompleted: true,
-      createdAt: "New Date 2",
-    },
-    {
-      id: 3,
-      title: "Home 3",
-      collectionId: 2,
-      isCompleted: false,
-      createdAt: "New Date 3",
-    },
-  ];
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    request("http://localhost:3000/api/collections", {}).then(res =>
+      console.log(res.data),
+    );
+  }, []);
 
   return (
     <>

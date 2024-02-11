@@ -1,11 +1,19 @@
 const db = require("../db");
 
 // get all collection
-const getAllTodos = async (req, res) => {
+const getAllTodosByCollection = async (req, res) => {
   /** @todo - filter by user */
 
   try {
-    const data = await db("todo");
+    const collection_id = req.params.id;
+    const data = await db("todo").where("collection_id", collection_id);
+
+    if (data == 0) {
+      return res
+        .status(404)
+        .json({ status: 404, success: false, error: "Collection Not found" });
+    }
+
     res.status(200).json({
       status: 200,
       success: true,
@@ -165,7 +173,7 @@ const deleteTodosSome = async (req, res) => {
 };
 
 module.exports = {
-  getAllTodos,
+  getAllTodosByCollection,
   createTodos,
   getTodosById,
   updateTodos,

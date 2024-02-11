@@ -6,6 +6,13 @@ const knex = require("knex")({
     user: "root",
     password: "",
     database: "todo",
+    typeCast(field, next) {
+      if (field.type == "BIT") {
+        let buffer = field.buffer();
+        return buffer[0] == 1;
+      }
+      return next();
+    },
   },
 });
 
@@ -19,6 +26,13 @@ module.exports = knex;
 //     user: process.env.DB_USER,
 //     password: process.env.DB_PASSWORD,
 //     database: process.env.DB_NAME,
+//     typeCast(field, next) {
+//       if (field.type == "BIT") {
+//         let buffer = field.buffer();
+//         return buffer[0] == 1;
+//       }
+//       return next();
+//     },
 //   },
 // });
 

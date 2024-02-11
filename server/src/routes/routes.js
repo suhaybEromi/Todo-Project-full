@@ -14,4 +14,11 @@ app.use(`/${prefix}/collections`, require("./collection.routes"));
 // todos
 app.use(`/${prefix}/todos`, require("./todos.routes"));
 
+// 404
+app.use((req, res) =>
+  res
+    .status(404)
+    .send({ status: 404, success: false, error: "Endpoint not found" }),
+);
+
 module.exports = app;
