@@ -74,6 +74,7 @@ const getCollectionById = async (req, res) => {
   }
 };
 
+// update collection
 const updateCollection = async (req, res) => {
   /** @todo - filter by user */
 
@@ -132,7 +133,7 @@ const deleteCollection = async (req, res) => {
   }
 };
 
-// deleteCollectionSome
+// delete collection some
 const deleteCollectionSome = async (req, res) => {
   try {
     const collection_id = req.params.id.split(",").map(id => parseInt(id));
@@ -164,7 +165,6 @@ const deleteCollectionSome = async (req, res) => {
     res.status(500).json({ status: 500, success: false, error: err.message });
   }
 };
-
 module.exports = {
   getAllCollection,
   getCollectionById,
