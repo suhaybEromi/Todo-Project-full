@@ -1,11 +1,8 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 require("dotenv").config();
-const db = require("./db");
+const routes = require("./routes/routes");
+app.use(routes);
 
-app.get("/", async (req, res) => {
-  const data = await db.select("*").from("user");
-  console.log(data);
-  res.send(data);
-});
 app.listen(3000, () => console.log("Running"));
