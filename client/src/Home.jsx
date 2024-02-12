@@ -1,8 +1,8 @@
-import Todo from "./components/Todo";
 import { useEffect, useState } from "react";
 import Dailog from "./components/Dailog";
 import request from "./components/request";
-
+import Todo from "./components/Todo";
+import Collection from "./components/Collection";
 export default function Page() {
   const [datas, setDatas] = useState([]);
 
@@ -14,6 +14,15 @@ export default function Page() {
       .then(res => setDatas(res.data.data))
       .catch(err => console.log(err.data));
   }, []);
+
+  // /NOTE we can send that too👇,but the above is easier👆.
+  // useEffect(() => {
+  //   axios({
+  //     url: "http://localhost:3000/api/collections",
+  //     method: "GET",
+  //     headers: { "Content-Type": "application/json" },
+  //   }).then(res => console.log(res));
+  // }, []);
 
   return (
     <>
@@ -28,9 +37,9 @@ export default function Page() {
 
               {/* collections */}
               <div>
-                {/* {datas.map(todo => (
-                  <Todo key={todo.id} data={todo} />
-                ))} */}
+                {datas.map(collection => (
+                  <Collection key={collection.collection_id} data={collection} />
+                ))}
                 <div className="text-center mt-3 mb-2">
                   <button
                     className="btn btn-dark w-50 p-2"

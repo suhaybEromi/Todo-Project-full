@@ -25,6 +25,15 @@ export default function Page() {
     );
   }, []);
 
+  // /NOTE we can send that too👇,but the above is easier👆.
+  // useEffect(() => {
+  //   axios({
+  //     url: "http://localhost:3000/api/collections",
+  //     method: "GET",
+  //     headers: { "Content-Type": "application/json" },
+  //   }).then(res => console.log(res));
+  // }, []);
+
   return (
     <>
       <div>
@@ -75,7 +84,7 @@ export default function Page() {
               {/* todo's */}
               <div>
                 {todos.map(todo => (
-                  <Todo key={todo.id} data={todo} />
+                  <Todo key={todo.todo_id} data={todo} />
                 ))}
                 <div className="text-center mt-3 mb-2">
                   <button
