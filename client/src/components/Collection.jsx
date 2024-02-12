@@ -22,8 +22,6 @@ export default function Collection({ data }) {
   const [showDelete, setShowDelete] = useState(false);
   const [datas, setDatas] = useState(data);
 
-  console.log(data);
-
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center">
@@ -67,12 +65,13 @@ export default function Collection({ data }) {
               type="text"
               id={`collection-${data.collection_id}`}
               name={`collection-${data.collection_id}`}
-              placeholder="collection"
+              placeholder="Collection Title"
               className="form-control form-control-lg border-2 rounded-4 customInput"
               value={datas.collection_name}
               onChange={e =>
                 setDatas({ ...datas, collection_name: e.target.value })
               }
+              autoComplete="off"
             />
             <style>
               {`

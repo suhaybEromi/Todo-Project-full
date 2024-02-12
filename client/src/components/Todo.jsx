@@ -33,8 +33,12 @@ export default function Todo({ data }) {
             className="mb-4"
             checked={datas.todo_is_completed}
             onChange={() =>
-              setDatas({ ...datas, todo_is_completed: !datas.todo_is_completed })
+              setDatas({
+                ...datas,
+                todo_is_completed: !datas.todo_is_completed,
+              })
             }
+            autoComplete="off"
           />
           <label
             htmlFor={`todo-${data.todo_id}`}
@@ -83,6 +87,7 @@ export default function Todo({ data }) {
               className="form-control form-control-lg border-2 rounded-4 customInput"
               value={datas.todo_title}
               onChange={e => setDatas({ ...datas, todo_title: e.target.value })}
+              autoComplete="off"
             />
             <style>
               {`

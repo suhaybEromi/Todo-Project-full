@@ -9,13 +9,13 @@ import request from "./components/request";
 export default function Page() {
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [datas, setDatas] = useState({ name: "Collection 1" });
+  const [datas, setDatas] = useState({ collection_name: "Collection 1" });
 
   const [showNewCollection, setShowNewCollection] = useState(false);
-  const [newCollection, setNewCollection] = useState({ name: "" });
+  const [newCollection, setNewCollection] = useState({ collection_name: "" });
 
   const [showNewTodo, setShowNewTodo] = useState(false);
-  const [newTodo, setNewTodo] = useState({ title: "" });
+  const [newTodo, setNewTodo] = useState({ todo_title: "" });
 
   const [todos, setTodos] = useState([]);
 
@@ -112,10 +112,11 @@ export default function Page() {
               type="text"
               id="collection"
               name="collection"
-              placeholder="Collection name"
+              placeholder="Collection"
               className="form-control form-control-lg border-2 rounded-4 customInput"
-              value={datas.name}
-              onChange={e => setDatas({ ...datas, name: e.target.value })}
+              value={datas.collection_name}
+              onChange={e => setDatas({ ...datas, collection_name: e.target.value })}
+              autoComplete="off"
             />
             <style>
               {`
@@ -154,11 +155,12 @@ export default function Page() {
               className="form-control form-control-lg border-2 rounded-4 customInput"
               id="newCollection"
               name="newCollection"
-              placeholder="Collection name"
-              value={newCollection.title}
+              placeholder="Collection"
+              value={newCollection.todo_title}
               onChange={e =>
-                setNewCollection({ ...datas, title: e.target.value })
+                setNewCollection({ ...datas, todo_title: e.target.value })
               }
+              autoComplete="off"
             />
             <style>
               {`
@@ -188,9 +190,10 @@ export default function Page() {
               className="form-control form-control-lg border-2 rounded-4 customInput"
               id="newTodo"
               name="newTodo"
-              placeholder="Todo title"
-              value={newTodo.title}
-              onChange={e => setNewTodo({ ...datas, title: e.target.value })}
+              placeholder="Todo"
+              value={newTodo.todo_title}
+              onChange={e => setNewTodo({ ...datas, todo_title: e.target.value })}
+              autoComplete="off"
             />
             <style>
               {`

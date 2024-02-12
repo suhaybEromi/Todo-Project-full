@@ -1,16 +1,29 @@
 import { useEffect, useState } from "react";
 import Dailog from "./components/Dailog";
 import request from "./components/request";
-import Todo from "./components/Todo";
 import Collection from "./components/Collection";
 export default function Page() {
   const [datas, setDatas] = useState([]);
 
   const [showNewCollection, setShowNewCollection] = useState(false);
-  const [newCollection, setNewCollection] = useState({ name: "" });
+  const [newCollection, setNewCollection] = useState({ collection_name: "" });
+
+  // handle add collection
+  const handleAddCollection = async () => {
+    try {
+      const { data } = await request("/api/collections", {
+        method: "POST",
+        data: { collection_name: newCollection.collection_name },
+      });
+      setDatas([...datas, data.data]);
+      setNewCollection({ collection_name: "" });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    request("http://localhost:3000/api/collections")
+    request("/api/collections")
       .then(res => setDatas(res.data.data))
       .catch(err => console.log(err.data));
   }, []);
@@ -38,7 +51,10 @@ export default function Page() {
               {/* collections */}
               <div>
                 {datas.map(collection => (
-                  <Collection key={collection.collection_id} data={collection} />
+                  <Collection
+                    key={collection.collection_id}
+                    data={collection}
+                  />
                 ))}
                 <div className="text-center mt-3 mb-2">
                   <button
@@ -58,7 +74,7 @@ export default function Page() {
       <Dailog
         show={showNewCollection}
         onClose={() => setShowNewCollection(false)}
-        acceptButton={{ show: true }}
+        acceptButton={{ show: true, onAccept: handleAddCollection }}
         header="Add Collection"
         body={
           <div className="mb-1 mt-1">
@@ -68,11 +84,13 @@ export default function Page() {
               id="newCollection"
               name="newCollection"
               placeholder="Collection name"
-              value={newCollection.title}
+              value={newCollection.collection_name}
               onChange={e =>
-                setNewCollection({ ...datas, title: e.target.value })
+                setNewCollection({ ...datas, collection_name: e.target.value })
               }
+              autoComplete="off"
             />
+
             <style>
               {`
                 .customInput {
