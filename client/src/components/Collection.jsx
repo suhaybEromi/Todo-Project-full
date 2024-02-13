@@ -26,13 +26,23 @@ export default function Collection({ data, setRefresh }) {
   // handle update collection
   const handleUpdateCollection = async () => {
     try {
-      const { data: res } = await request(
-        `/api/collections/${data.collection_id}`,
-        {
-          method: "PUT",
-          data: { collection_name: datas.collection_name },
-        },
-      );
+      await request(`/api/collections/${data.collection_id}`, {
+        method: "PUT",
+        data: { collection_name: datas.collection_name },
+      });
+      setRefresh(Math.random());
+    } catch (err) {
+      console.log(err.data);
+    }
+  };
+
+  // handle delete collection
+  const handleDeleteCollection = async () => {
+    try {
+      await request(`/api/collections/${data.collection_id}`, {
+        method: "DELETE",
+        data: { collection_name: datas.collection_name },
+      });
       setRefresh(Math.random());
     } catch (err) {
       console.log(err.data);
@@ -109,7 +119,7 @@ export default function Collection({ data, setRefresh }) {
       <Dailog
         show={showDelete}
         onClose={() => setShowDelete(false)}
-        acceptButton={{ show: true }}
+        acceptButton={{ show: true, onAccept: handleDeleteCollection }}
         header="Delete collection"
         body="Are you sure you want to delete this collection?"
       />

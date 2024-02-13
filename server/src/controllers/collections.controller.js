@@ -114,8 +114,9 @@ const deleteCollection = async (req, res) => {
   /** @todo - filter by user */
 
   try {
-    const body = req.params.id;
-    const isDeleted = await db("collection").where("collection_id", body).del();
+    const { id } = req.params;
+    await db("todo").where("collection_id", id).del();
+    const isDeleted = await db("collection").where("collection_id", id).del();
     if (isDeleted == 0) {
       return res.status(400).json({
         status: 400,
@@ -126,7 +127,7 @@ const deleteCollection = async (req, res) => {
     res.status(200).json({
       status: 200,
       success: true,
-      body,
+      id,
     });
   } catch (err) {
     res.status(500).json({ status: 500, success: false, error: err.message });

@@ -20,3 +20,12 @@ const request = (url, { method = "GET", headers, ...options } = {}) =>
   });
 
 export default request;
+
+// /NOTE we can send that too👇,but the above is easier👆.
+// useEffect(() => {
+//   axios({
+//     url: "http://localhost:3000/api/collections",
+//     method: "GET",
+//     headers: { "Content-Type": "application/json" },
+//   }).then(res => console.log(res));
+// }, []);

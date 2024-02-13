@@ -12,25 +12,10 @@ export default function Page() {
   // handle add collection
   const handleAddCollection = async () => {
     try {
-      const { data } = await request("/api/collections", {
+      await request("/api/collections", {
         method: "POST",
         data: { collection_name: newCollection.collection_name },
       });
-      setDatas([...datas, data.data]);
-      setRefresh(Math.random());
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // handle delete collection
-  const handleDeleteCollection = async () => {
-    try {
-      const { data } = await request("/api/collections", {
-        method: "POST",
-        data: { collection_name: newCollection.collection_name },
-      });
-      setDatas([...datas, data.data]);
       setRefresh(Math.random());
     } catch (err) {
       console.log(err);
@@ -42,15 +27,6 @@ export default function Page() {
       .then(res => setDatas(res.data.data))
       .catch(err => console.log(err.data));
   }, [refresh]);
-
-  // /NOTE we can send that too👇,but the above is easier👆.
-  // useEffect(() => {
-  //   axios({
-  //     url: "http://localhost:3000/api/collections",
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" },
-  //   }).then(res => console.log(res));
-  // }, []);
 
   return (
     <>
@@ -85,8 +61,8 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* New Collection */}
 
+      {/* New Collection */}
       <Dailog
         show={showNewCollection}
         onClose={() => setShowNewCollection(false)}
@@ -106,7 +82,6 @@ export default function Page() {
               }
               autoComplete="off"
             />
-
             <style>
               {`
                 .customInput {
