@@ -3,12 +3,13 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoTrashOutline } from "react-icons/io5";
 import Dailog from "./Dailog";
 import { Link } from "react-router-dom";
+import request from "./request";
 
 /**
  * Collection
  *
  * @param { Object } props - component props
- * @param {Object}   props.setRefresh - page refresh handler
+ * @param {Object} props.setRefresh - page refresh handler
  * @param {Obejct } props.data - collection datas
  * @param {Number} props.data.collection_id - collection collection_id
  * @param {String} props.data.collection_name - collection collection_name
@@ -17,10 +18,26 @@ import { Link } from "react-router-dom";
  * @returns collection component
  */
 
-export default function Collection({ data }) {
+export default function Collection({ data, setRefresh }) {
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [datas, setDatas] = useState(data);
+
+  // handle update collection
+  const handleUpdateCollection = async () => {
+    try {
+      const { data: res } = await request(
+        `/api/collections/${data.collection_id}`,
+        {
+          method: "PUT",
+          data: { collection_name: datas.collection_name },
+        },
+      );
+      setRefresh(Math.random());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div>
@@ -57,7 +74,7 @@ export default function Collection({ data }) {
       <Dailog
         show={showEdit}
         onClose={() => setShowEdit(false)}
-        acceptButton={{ show: true }}
+        acceptButton={{ show: true, onAccept: handleUpdateCollection }}
         header="Edit Collection"
         body={
           <div className="mb-1 mt-1">
@@ -81,7 +98,7 @@ export default function Collection({ data }) {
                 }
                 .customInput:hover {
                   border-color: #74E291;
-                } 
+                }
                 `}
             </style>
           </div>

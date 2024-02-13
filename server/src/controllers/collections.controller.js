@@ -80,7 +80,7 @@ const updateCollection = async (req, res) => {
 
   try {
     const { collection_name } = req.body;
-    const body = req.params.id;
+    const { body } = req.params.id;
     const isUpdated = await db("collection")
       .where("collection_id", body)
       .update({ collection_name });

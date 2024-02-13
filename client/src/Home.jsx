@@ -3,8 +3,9 @@ import Dailog from "./components/Dailog";
 import request from "./components/request";
 import Collection from "./components/Collection";
 export default function Page() {
-  const [datas, setDatas] = useState([]);
+  const [refresh, setRefresh] = useState(Math.random());
 
+  const [datas, setDatas] = useState([]);
   const [showNewCollection, setShowNewCollection] = useState(false);
   const [newCollection, setNewCollection] = useState({ collection_name: "" });
 
@@ -16,7 +17,7 @@ export default function Page() {
         data: { collection_name: newCollection.collection_name },
       });
       setDatas([...datas, data.data]);
-      setNewCollection({ collection_name: "" });
+      setRefresh(Math.random());
     } catch (err) {
       console.log(err);
     }
@@ -26,7 +27,7 @@ export default function Page() {
     request("/api/collections")
       .then(res => setDatas(res.data.data))
       .catch(err => console.log(err.data));
-  }, []);
+  }, [refresh]);
 
   // /NOTE we can send that too👇,but the above is easier👆.
   // useEffect(() => {
@@ -54,6 +55,7 @@ export default function Page() {
                   <Collection
                     key={collection.collection_id}
                     data={collection}
+                    setRefresh={setRefresh}
                   />
                 ))}
                 <div className="text-center mt-3 mb-2">
@@ -69,8 +71,8 @@ export default function Page() {
           </div>
         </div>
       </div>
-
       {/* New Collection */}
+
       <Dailog
         show={showNewCollection}
         onClose={() => setShowNewCollection(false)}

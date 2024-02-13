@@ -115,7 +115,9 @@ export default function Page() {
               placeholder="Collection"
               className="form-control form-control-lg border-2 rounded-4 customInput"
               value={datas.collection_name}
-              onChange={e => setDatas({ ...datas, collection_name: e.target.value })}
+              onChange={e =>
+                setDatas({ ...datas, collection_name: e.target.value })
+              }
               autoComplete="off"
             />
             <style>
@@ -190,9 +192,11 @@ export default function Page() {
               className="form-control form-control-lg border-2 rounded-4 customInput"
               id="newTodo"
               name="newTodo"
-              placeholder="Todo"
+              placeholder="Todo Title"
               value={newTodo.todo_title}
-              onChange={e => setNewTodo({ ...datas, todo_title: e.target.value })}
+              onChange={e =>
+                setNewTodo({ ...datas, todo_title: e.target.value })
+              }
               autoComplete="off"
             />
             <style>
