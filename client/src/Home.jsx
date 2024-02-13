@@ -23,6 +23,20 @@ export default function Page() {
     }
   };
 
+  // handle delete collection
+  const handleDeleteCollection = async () => {
+    try {
+      const { data } = await request("/api/collections", {
+        method: "POST",
+        data: { collection_name: newCollection.collection_name },
+      });
+      setDatas([...datas, data.data]);
+      setRefresh(Math.random());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     request("/api/collections")
       .then(res => setDatas(res.data.data))
