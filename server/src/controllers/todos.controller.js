@@ -88,9 +88,9 @@ const updateTodos = async (req, res) => {
 
   try {
     const { todo_title } = req.body;
-    const body = req.params.id;
+    const { id } = req.params;
     const isUpdated = await db("todo")
-      .where("todo_id", body)
+      .where("todo_id", id)
       .update({ todo_title });
     if (isUpdated == 0) {
       return res.status(400).json({
@@ -100,7 +100,7 @@ const updateTodos = async (req, res) => {
       });
     }
 
-    const data = await db("todo").where("todo_id", body);
+    const data = await db("todo").where("todo_id", id);
     if (data.length == 0) {
       return res
         .status(404)

@@ -1,8 +1,8 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { IoTrashOutline } from "react-icons/io5";
 import Dailog from "./Dailog";
-import { Link } from "react-router-dom";
 import request from "./request";
 
 /**
@@ -35,7 +35,7 @@ export default function Collection({ data, setRefresh }) {
       );
       setRefresh(Math.random());
     } catch (err) {
-      console.log(err);
+      console.log(err.data);
     }
   };
 
@@ -80,10 +80,10 @@ export default function Collection({ data, setRefresh }) {
           <div className="mb-1 mt-1">
             <input
               type="text"
+              className="form-control form-control-lg border-2 rounded-4 customInput"
               id={`collection-${data.collection_id}`}
               name={`collection-${data.collection_id}`}
               placeholder="Collection Title"
-              className="form-control form-control-lg border-2 rounded-4 customInput"
               value={datas.collection_name}
               onChange={e =>
                 setDatas({ ...datas, collection_name: e.target.value })

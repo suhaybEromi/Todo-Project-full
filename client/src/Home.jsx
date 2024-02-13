@@ -43,7 +43,7 @@ export default function Page() {
       <div>
         <div style={{ background: "#4DD0E1" }}>
           <div className="d-flex justify-content-center align-items-center vh-100">
-            {/* coolection's - main */}
+            {/* collections - main */}
             <main className="bg-light p-3 rounded-4 w-75">
               {/* title */}
               <h5 className="fw-bold mt-2">Collection</h5>
