@@ -12,7 +12,7 @@ export default function Page() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [refresh, setRefresh] = useState(false);
+  const [refresh, setRefresh] = useState(Math.random());
   // current todo
   const [datas, setDatas] = useState([]);
   // all collection
@@ -39,6 +39,7 @@ export default function Page() {
         method: "POST",
         data: { collection_name: newCollection.collection_name },
       });
+      setRefresh(Math.random());
       setNewCollection({ collection_name: "" });
       navigate(`/${data.data.collection_id}`);
     } catch (err) {
@@ -137,12 +138,12 @@ export default function Page() {
                     value={collection.collection_id}
                     onChange={e => navigate(`/${e.target.value}`)}
                   >
-                    {allCollections.map(collection => (
+                    {allCollections.map(collectionItem => (
                       <option
-                        key={collection.collection_id}
-                        value={collection.collection_id}
+                        key={collectionItem.collection_id}
+                        value={collectionItem.collection_id}
                       >
-                        {collection.collection_name}
+                        {collectionItem.collection_name}
                       </option>
                     ))}
                   </Form.Select>
@@ -188,7 +189,7 @@ export default function Page() {
               className="form-control form-control-lg border-2 rounded-4 customInput"
               id="newCollection"
               name="newCollection"
-              placeholder="Collection"
+              placeholder="Collection name"
               value={newCollection.collection_name}
               onChange={e =>
                 setNewCollection({

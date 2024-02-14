@@ -23,17 +23,13 @@ const createCollection = async (req, res) => {
     const user_id = 1;
 
     /** @todo - return the whole collection */
-    const createdId = await db("collection").insert({
+    const [createdId] = await db("collection").insert({
       collection_name,
       user_id,
     });
-    if (createdId.length == 0) {
-      return res
-        .status(400)
-        .json({ status: 400, success: false, error: "Collection Not created" });
-    }
 
-    const data = await db("collection").where("collection_id", createdId[0]);
+    const data = await db("collection").where("collection_id", createdId);
+
     if (data.length == 0) {
       return res
         .status(404)
@@ -43,7 +39,7 @@ const createCollection = async (req, res) => {
     res.status(200).json({
       status: 200,
       success: true,
-      data,
+      data: data[0],
     });
   } catch (err) {
     res.status(500).json({ status: 500, success: false, error: err.message });
@@ -55,8 +51,8 @@ const getCollectionById = async (req, res) => {
   /** @todo - filter by user */
 
   try {
-    const body = req.params.id;
-    const data = await db("collection").where("collection_id", body);
+    const { id } = req.params;
+    const data = await db("collection").where("collection_id", id);
 
     if (data.length == 0) {
       return res
