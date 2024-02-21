@@ -14,7 +14,10 @@ const login = async (req, res) => {
         .status(400)
         .json({ status: 400, success: false, error: "No data added" });
     }
+    //   .NOTE                  yakam away la body wary agrin,dwam aw hashaya ka hamana.
     const checkPassword = bcrypt.compareSync(password, data[0].user_password);
+    if (checkPassword == false) throw new Error("Invalid credential");
+    const token = jwt.sign({ id: data[0].user_id }, process.env.JWT_SECRET);
   } catch (err) {
     return res
       .status(500)
@@ -31,7 +34,7 @@ const register = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     //.NOTE username and password is empty.
-    if (username == false && password == false) {
+    if (!username && !password) {
       return res
         .status(400)
         .json({ status: 400, success: false, error: "Invalid data" });
