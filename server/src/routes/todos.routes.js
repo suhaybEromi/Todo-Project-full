@@ -6,6 +6,7 @@ app.get("/collection/:id", todos.getAllTodosByCollection);
 app.post("/", todos.createTodos);
 app.get("/:id", todos.getTodosById);
 app.put("/:id", todos.updateTodos);
+app.patch("/:id", todos.updateTodosIsCompleted);
 app.delete("/:id", todos.deleteTodos);
 app.delete("/some/:id", todos.deleteTodosSome);
 

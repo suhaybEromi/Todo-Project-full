@@ -5,14 +5,15 @@ const getAllTodosByCollection = async (req, res) => {
   /** @todo - filter by user */
 
   try {
-    const collection_id = req.params.id;
-    const data = await db("todo").where("collection_id", collection_id);
+    const { id } = req.params;
 
-    if (data == 0) {
-      return res
-        .status(404)
-        .json({ status: 404, success: false, error: "Collection Not found" });
-    }
+    const data = await db("todo").where("collection_id", id);
+
+    // if (data == 0) {
+    //   return res
+    //     .status(404)
+    //     .json({ status: 404, success: false, error: "Collection Not found" });
+    // }
 
     res.status(200).json({
       status: 200,
@@ -27,21 +28,21 @@ const getAllTodosByCollection = async (req, res) => {
 // create todo
 const createTodos = async (req, res) => {
   try {
-    const { todo_title } = req.body;
-    const collection_id = 1;
+    const { todo_title, collection_id } = req.body;
 
-    /** @todo - return the whole todo */
-    const createdId = await db("todo").insert({
+    const [createdId] = await db("todo").insert({
       todo_title,
       collection_id,
     });
-    if (createdId.length == 0) {
-      return res
-        .status(400)
-        .json({ status: 400, success: false, error: "Todo Not created" });
-    }
 
-    const data = await db("todo").where("todo_id", createdId[0]);
+    // if (createdId.length == 0) {
+    //   return res
+    //     .status(400)
+    //     .json({ status: 400, success: false, error: "Todo Not created" });
+    // }
+
+    const data = await db("todo").where("todo_id", createdId); // Use where().first() to get the created todo
+
     if (data.length == 0) {
       return res
         .status(404)
@@ -92,6 +93,44 @@ const updateTodos = async (req, res) => {
     const isUpdated = await db("todo")
       .where("todo_id", id)
       .update({ todo_title });
+    console.log(isUpdated);
+
+    if (isUpdated == 0) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        error: "Todo Not updated",
+      });
+    }
+
+    const data = await db("todo").where("todo_id", id);
+
+    if (data.length == 0) {
+      return res
+        .status(404)
+        .json({ status: 404, success: false, error: "Todo Not found" });
+    }
+
+    res.status(200).json({
+      status: 200,
+      success: true,
+      data,
+    });
+  } catch (err) {
+    res.status(500).json({ status: 500, success: false, error: err.message });
+  }
+};
+
+// update todo isCompleted
+const updateTodosIsCompleted = async (req, res) => {
+  /** @todo - filter by user */
+
+  try {
+    const { todo_is_completed } = req.body;
+    const { id } = req.params;
+    const isUpdated = await db("todo")
+      .where("todo_id", id)
+      .update({ todo_is_completed });
     if (isUpdated == 0) {
       return res.status(400).json({
         status: 400,
@@ -122,8 +161,8 @@ const deleteTodos = async (req, res) => {
   /** @todo - filter by user */
 
   try {
-    const body = req.params.id;
-    const isDeleted = await db("todo").where("todo_id", body).del();
+    const { id } = req.params;
+    const isDeleted = await db("todo").where("todo_id", id).del();
     if (isDeleted == 0) {
       return res.status(400).json({
         status: 400,
@@ -134,7 +173,7 @@ const deleteTodos = async (req, res) => {
     res.status(200).json({
       status: 200,
       success: true,
-      body,
+      id,
     });
   } catch (err) {
     res.status(500).json({ status: 500, success: false, error: err.message });
@@ -177,6 +216,7 @@ module.exports = {
   createTodos,
   getTodosById,
   updateTodos,
+  updateTodosIsCompleted,
   deleteTodos,
   deleteTodosSome,
 };

@@ -15,6 +15,9 @@ export default function Page() {
   const [refresh, setRefresh] = useState(Math.random());
   // current todo
   const [datas, setDatas] = useState([]);
+  // new todo
+  const [showNewTodo, setShowNewTodo] = useState(false);
+  const [newTodo, setNewTodo] = useState({ todo_title: "" });
   // all collection
   const [allCollections, setAllCollections] = useState([]);
   // current collection
@@ -28,9 +31,23 @@ export default function Page() {
   // new collection
   const [showNewCollection, setShowNewCollection] = useState(false);
   const [newCollection, setNewCollection] = useState({ collection_name: "" });
-  // new todo
-  const [showNewTodo, setShowNewTodo] = useState(false);
-  const [newTodo, setNewTodo] = useState({ todo_title: "" });
+
+  // handle add todo
+  const handleAddTodo = async () => {
+    try {
+      await request("/api/todos", {
+        method: "POST",
+        data: {
+          todo_title: newTodo.todo_title,
+          collection_id: collection.collection_id,
+        },
+      });
+      setNewTodo({ todo_title: "" });
+      setRefresh(Math.random());
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   // handle add collection
   const handleAddCollection = async () => {
@@ -86,6 +103,13 @@ export default function Page() {
       .then(res => {
         setCollection(res.data.data);
         setEditCollection(res.data.data);
+      })
+      .catch(err => console.log(err.data));
+
+    // add todo by collection_id
+    request(`/api/todos/collection/${id}`)
+      .then(res => {
+        setDatas(res.data.data);
       })
       .catch(err => console.log(err.data));
   }, [refresh, id]);
@@ -160,7 +184,11 @@ export default function Page() {
               {/* todo's */}
               <div>
                 {datas.map(todo => (
-                  <Todo key={todo.todo_id} data={todo} />
+                  <Todo
+                    key={todo.todo_id}
+                    data={todo}
+                    setRefresh={setRefresh}
+                  />
                 ))}
                 <div className="text-center mt-3 mb-2">
                   <button
@@ -265,7 +293,7 @@ export default function Page() {
       <Dailog
         show={showNewTodo}
         onClose={() => setShowNewTodo(false)}
-        acceptButton={{ show: true }}
+        acceptButton={{ show: true, onAccept: handleAddTodo }}
         header="Add Todo"
         body={
           <div className="mb-1 mt-1">

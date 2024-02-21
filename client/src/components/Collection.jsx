@@ -41,7 +41,6 @@ export default function Collection({ data, setRefresh }) {
     try {
       await request(`/api/collections/${data.collection_id}`, {
         method: "DELETE",
-        data: { collection_name: datas.collection_name },
       });
       setRefresh(Math.random());
     } catch (err) {
