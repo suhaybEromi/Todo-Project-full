@@ -14,6 +14,9 @@ app.use(`/${prefix}/collections`, require("./collection.routes"));
 // todos
 app.use(`/${prefix}/todos`, require("./todos.routes"));
 
+// auth
+app.use(`/${prefix}/auth`, require("./auth.routes"));
+
 // 404
 app.use((req, res) =>
   res
