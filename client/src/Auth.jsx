@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Dailog from "./components/Dailog";
 import request from "./components/request";
+import { AuthContext } from "./components/AuthContext";
 
 export default function Auth() {
+  const { loginState, login: loginStateHandler } = useContext(AuthContext);
   const [login, setLogin] = useState({ username: "", password: "" });
   const [register, setRegister] = useState({ username: "", password: "" });
   const [showRegisterd, setShowRegistered] = useState(false);
+
+  console.log("loginState", loginState);
 
   // handle login
   const handleLogin = async e => {
@@ -15,7 +19,7 @@ export default function Auth() {
         method: "POST",
         data: { username: login.username, password: login.password },
       });
-      console.log(data);
+      loginStateHandler(data.data.token);
     } catch (err) {
       console.log(err);
     }
@@ -47,7 +51,7 @@ export default function Auth() {
               <hr className="border-dark border-2" />
 
               {/* Login Form */}
-              <form>
+              <form onSubmit={handleLogin}>
                 <div>
                   <input
                     type="text"

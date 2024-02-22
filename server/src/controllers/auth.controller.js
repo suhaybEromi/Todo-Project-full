@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 /**
  * login user
  */
+
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -17,7 +18,20 @@ const login = async (req, res) => {
     //   .NOTE                  yakam away la body wary agrin,dwam aw hashaya ka hamana.
     const checkPassword = bcrypt.compareSync(password, data[0].user_password);
     if (checkPassword == false) throw new Error("Invalid credential");
-    const token = jwt.sign({ id: data[0].user_id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: data[0].user_id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      data: {
+        token,
+        id: data[0].user_id,
+        username: data[0].user_username,
+        createdAt: data[0].user_date,
+      },
+    });
   } catch (err) {
     return res
       .status(500)
@@ -28,6 +42,7 @@ const login = async (req, res) => {
 /**
  * register user
  */
+
 const register = async (req, res) => {
   try {
     const { username, password } = req.body;
